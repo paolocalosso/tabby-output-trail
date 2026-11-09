@@ -1,0 +1,34 @@
+{
+  "name": "tabby-output-trail",
+  "version": "0.1.0",
+  "description": "Smooth scrolling of terminal output for Tabby: new lines glide into place",
+  "keywords": [
+    "tabby-plugin",
+    "smooth-scroll",
+    "animation",
+    "output",
+    "xterm"
+  ],
+  "main": "index.js",
+  "files": [
+    "index.js",
+    "README.md",
+    "LICENSE"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paolocalosso/tabby-output-trail.git"
+  },
+  "homepage": "https://github.com/paolocalosso/tabby-output-trail#readme",
+  "bugs": {
+    "url": "https://github.com/paolocalosso/tabby-output-trail/issues"
+  },
+  "author": "Paolo Calosso <paolo@oprtorino.net>",
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/core": "*",
+    "tabby-core": "*",
+    "tabby-settings": "*",
+    "tabby-terminal": "*"
+  }
+}
