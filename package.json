@@ -1,6 +1,6 @@
 {
   "name": "tabby-output-trail",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Smooth scrolling of terminal output for Tabby: new lines glide into place",
   "keywords": [
     "tabby-plugin",

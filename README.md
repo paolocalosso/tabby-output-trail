@@ -18,8 +18,9 @@ Tested with Tabby 1.0.238 (xterm.js 5.5) on Linux.
   animation frame and only while output is arriving, and the glide itself is
   a CSS transform animated by the browser's compositor (GPU), with no
   JavaScript per frame. With no output, the plugin does nothing at all.
-- **Knows when to stay out of the way.** Big chunks of output and continuous
-  streams (`cat`, build logs) jump as usual; full-screen apps (vim, htop,
+- **Knows when to stay out of the way.** Big chunks of output jump as usual
+  (or, if you prefer, end with a short glide of the last lines), continuous
+  streams (`cat`, build logs) don't animate at all; full-screen apps (vim, htop,
   less) and a scrolled-back view are never animated. It also respects the
   system's "reduce motion" setting.
 
@@ -43,10 +44,11 @@ and restart Tabby. It's plain JavaScript, there is nothing to build.
 | Enable | on | |
 | Glide duration | 110 ms | how long new lines take to slide into place |
 | Maximum lines per glide | 3 | bigger chunks jump instead of gliding |
+| Big output | Jump | when more lines than that arrive at once: jump as usual, or a short glide of the last lines (everything is already there, only the last few rows slide in) |
 | Stream filter | 400 ms | output that keeps scrolling longer than this stops gliding until it pauses |
 
 The same options live in Tabby's `config.yaml` under `outputTrail`
-(`enabled`, `duration`, `maxLines`, `streamMs`).
+(`enabled`, `duration`, `maxLines`, `bigOutput`: `jump` or `glide`, `streamMs`).
 
 ## How it works
 

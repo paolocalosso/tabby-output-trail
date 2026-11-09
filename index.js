@@ -43,6 +43,9 @@ const DEFAULTS = {
     // Output that keeps scrolling for longer than this (ms) is treated as a
     // stream (cat, build logs): no animation until it pauses
     streamMs: 400,
+    // Frames that scroll more than maxLines: 'jump' (classic) or 'glide'
+    // (the last maxLines rows slide in, the rest appears at once)
+    bigOutput: 'jump',
 }
 
 const EASING = 'cubic-bezier(0.22, 0.8, 0.3, 1)'
@@ -62,6 +65,7 @@ function normalizeSettings (stored) {
         duration: Math.min(1000, Math.max(20, num(s.duration, DEFAULTS.duration))),
         maxLines: Math.min(50, Math.max(1, Math.round(num(s.maxLines, DEFAULTS.maxLines)))),
         streamMs: Math.min(5000, Math.max(0, num(s.streamMs, DEFAULTS.streamMs))),
+        bigOutput: s.bigOutput === 'glide' ? 'glide' : 'jump',
     }
 }
 
@@ -220,11 +224,16 @@ class SmoothScroller {
         const cell = this.cellHeight()
         if (!screen || !cell || typeof screen.animate !== 'function') return
 
-        const from = this.currentOffset() + lines * cell
-        if (from > s.maxLines * cell) {
-            // Too far to glide (big output chunk, clear...): just jump
-            this.skip()
-            return
+        let from = this.currentOffset() + lines * cell
+        const limit = s.maxLines * cell
+        if (from > limit) {
+            if (s.bigOutput !== 'glide') {
+                // Too far to glide (big output chunk, clear...): just jump
+                this.skip()
+                return
+            }
+            // Everything is already there: only the last rows slide in
+            from = limit
         }
         this.anim?.cancel()
         this.anim = screen.animate(
@@ -338,6 +347,17 @@ const SETTINGS_TEMPLATE = `
             [(ngModel)]="s.maxLines" (ngModelChange)="save()">
         <span>{{ s.maxLines }} lines</span>
     </div>
+</div>
+
+<div class="form-line">
+    <div class="header">
+        <div class="title">Big output</div>
+        <div class="description">When more lines than that arrive at once (dmesg, long listings)</div>
+    </div>
+    <select class="form-control" [(ngModel)]="s.bigOutput" (ngModelChange)="save()">
+        <option value="jump">Jump (classic)</option>
+        <option value="glide">Short glide of the last lines</option>
+    </select>
 </div>
 
 <div class="form-line">
